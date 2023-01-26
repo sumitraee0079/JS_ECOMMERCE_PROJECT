@@ -28,7 +28,21 @@
   </p>
     </div>
 </body>
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js">
+  
+  const obj = {
+    name, email, phone_no
+  }
+  
+  axios.post("https://crudcrud.com/api/cfd189a55cfd404388de1f2133d2b82a/appointmentData", obj)
+    .then((response) => {
+        console.log(response)
+        displayPrice(response.data)
+      })
+    .catch((error) => {
+        console.log(error)
+      })
+    
   
   let submitBtn = document.getElementbyID('sellPrice')
   submitBtn.addEventListener('click', displayPrice)
