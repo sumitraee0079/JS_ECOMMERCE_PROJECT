@@ -54,10 +54,23 @@
     .catch((error) => {console.log(error)})
     })*/
   
-  const deleteTodoItem = async id => {
+  const ParentNode = document.getElementById('listOfUsers')
+const childHTML = `<li id=${user._id}> ${user.name} - ${user.email} 
+                    <button onclick=deleteUser('${user._id}')> Delete User</button>
+                    <button onclick=editUserDetails('${user.email}', '${user.name}', '${user.phonenumber}', '${user._id}')> Edit User</button>`
+
+function editUserDetails(email, name, phonenumber, user Id)  {
+    document.getElementById('email').value = emailId;
+    document.getElementById('username').value = name;
+    document.getElementById('phonenumber').value = phonenumber;
+
+    deleteUser(userId)
+}
+  
+  const deleteUser = async id => {
   try {
     const response = await axios.delete("https://crudcrud.com/api/cfd189a55cfd404388de1f2133d2b82a/appointmentsData/63d2d6d007307e03e8c75f75");
-    console.log(`Deleted Todo ID: `, id);
+    console.log(`Deleted User ID: `, id);
 
     return response.data;
   } catch (errors) {
