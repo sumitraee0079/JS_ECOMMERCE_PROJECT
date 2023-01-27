@@ -43,7 +43,7 @@
         console.log(error)
       })*/
   
-  window.addEventListener("DOMContentLoaded", () =>   {
+  /*window.addEventListener("DOMContentLoaded", () =>   {
     axios.get("https://crudcrud.com/api/cfd189a55cfd404388de1f2133d2b82a/appointmentsData/")
     .then((response) => {
         console.log(response)
@@ -52,7 +52,18 @@
         }
     })
     .catch((error) => {console.log(error)})
-    })
+    })*/
+  
+  const deleteTodoItem = async id => {
+  try {
+    const response = await axios.delete("https://crudcrud.com/api/cfd189a55cfd404388de1f2133d2b82a/appointmentsData/63d2d6d007307e03e8c75f75");
+    console.log(`Deleted Todo ID: `, id);
+
+    return response.data;
+  } catch (errors) {
+    console.error(errors);
+  }
+};
     
   
   let submitBtn = document.getElementbyID('sellPrice')
