@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jqueryui.css">
+   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+   Selling Price:
+   <input type="text" name="sellingPrice" id="sp">
+   Product Name:
+   <input type="text" name="productName" id="prodName">
+   Choose a Category:
+  <select type="text" name="category" id="type">
+    <option>Electronics</option>
+    <option>Food</option>
+    <option>Skincare</option>
+    </select>
+   <button onclick="display()">Click Me</button>
+   <ul id="listOfItems"></ul>
+   <script>
+    
+
+    function saveToLocalStorage(event)  {
+        event.preventDefault()
+        const sp = event.target.sellingPrice.value
+        const prodName = event.target.productName.value
+        const category = event.target.category.value
+
+        const obj = {
+        sp,
+        prodName,
+        category
+    }
+
+    localStorage.setItem(obj.sp, JSON.stringify(obj))
+    display(obj)
+    }
+      function display(obj) {
+         const parentItem = document.getElementById('listOfItems')
+         const childItem = document.createElement('li')
+         childItem.textContent = obj.sp + ">" + obj.prodName + ">" + obj.category
+
+        const deleteButton = document.getElementById('input')
+        deleteButton.type = "button"
+        deleteButton.value = "Delete"
+        deleteButton.onclick = () => {
+            localStorage.removeItem(obj.sp)
+            parentItem.removeChild(childItem)
+            
+        }
+
+        childItem.appendChild(deleteButton)
+        parentElem.appendChild(childItem)
+  
+        axios.get('https://crudcrud.com/api/cfd189a55cfd404388de1f2133d2b82a')
+        .then(function (response) {
+        resultElement.innerHTML = generateSuccessHTMLOutput(response);
+    })
+    .catch(function (error) {
+      resultElement.innerHTML = generateErrorHTMLOutput(error);
+    });  
+
+    function performPostRequest(e) {
+  var resultElement = document.getElementById('postResult');
+  var values = document.getElementById('type').value;
+  resultElement.innerHTML = '';
+  
+  axios.post('https://crudcrud.com/api/cfd189a55cfd404388de1f2133d2b82a', {
+    userId: '1',
+    title: values,
+    completed: false
+  })
+  .then(function (response) {
+    resultElement.innerHTML = generateSuccessHTMLOutput(response);
+  })
+  .catch(function (error) {
+    resultElement.innerHTML = generateErrorHTMLOutput(error);
+  });
+  
+  e.preventDefault();
+}
+
+}
+    
+    function generateSuccessHTMLOutput(response) {
+  return  '<h4>Result</h4>' + 
+          '<h5>Status:</h5> ' + 
+          '<pre>' + response.status + ' ' + response.statusText + '</pre>' +
+          '<h5>Headers:</h5>' + 
+          '<pre>' + JSON.stringify(response.headers, null, '\t') + '</pre>' + 
+          '<h5>Data:</h5>' + 
+          '<pre>' + JSON.stringify(response.data, null, '\t') + '</pre>'; 
+}
+
+function generateErrorHTMLOutput(error) {
+  return  '<h4>Result</h4>' + 
+          '<h5>Message:</h5> ' + 
+          '<pre>' + error.message + '</pre>' +
+          '<h5>Status:</h5> ' + 
+          '<pre>' + error.response.status + ' ' + error.response.statusText + '</pre>' +
+          '<h5>Headers:</h5>' + 
+          '<pre>' + JSON.stringify(error.response.headers, null, '\t') + '</pre>' + 
+          '<h5>Data:</h5>' + 
+          '<pre>' + JSON.stringify(error.response.data, null, '\t') + '</pre>'; 
+}
+
+
+         
+      
+   </script>
+</body>
+</html>
