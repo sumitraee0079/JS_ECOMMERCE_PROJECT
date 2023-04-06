@@ -1,0 +1,165 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SELLERS ADMIN PAGE</title>
+    </head>
+    <body>
+        <form id="action" onsubmit="saveToLocalStorage(event)">
+        Product ID:
+        <input type="text" id="pid" name="pid">
+        Product Name:
+        <input type="text" id="pname" name="pname">
+        Selling Price:
+        <input type="number" id="price" name="price">
+        Choose a category:
+        <select id="pcat" name="pcat">
+            <option>Skincare</option>
+            <option>Electronics</option>
+            </select>
+            <input class="btn" type="submit" value="ADD PRODUCT">
+
+        </form>
+
+        <ul id="users"></ul>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+
+      var formid = document.getElementById("action")
+      var pId = document.getElementById("pid")
+      var pName = document.getElementById("pname")
+      var pCost = document.getElementById("price")
+      var cat = document.getElementById("pcat")
+      var userList = document.getElementById("users")
+
+      //formid.addEventListener("submit", showData)
+
+      async function saveToLocalStorage(event)  {
+        
+        event.preventDefault()
+        const productId = event.target.pid.value
+        const productName = event.target.pname.value
+        const productPrice = event.target.price.value
+        const category = event.target.pcat.value
+
+        let obj = {
+          productId,
+          productName,
+          productPrice,
+          category
+        }
+
+        try {
+
+        response = await axios.post("https://crudcrud.com/api/c9320b0b0a4a43a0889f1ea1b027f681/data", obj) 
+          showData(response.data)
+        }
+        catch(error) {
+          console.log(error)
+        }
+
+      }
+    
+
+        window.addEventListener("DOMContentLoaded", () => {
+          axios.get("https://crudcrud.com/api/c9320b0b0a4a43a0889f1ea1b027f681/data")
+          .then((response) => {
+            console.log(response)
+            
+
+            for (var i = 0; i < response.data.length; i++) {
+              showData(response.data[i])
+            }
+          }).catch((error) => console.log(error))
+        }
+        )
+
+        /*window.addEventListener("DOMContentLoaded", () => {
+          try {
+          response = axios.get("https://crudcrud.com/api/c9320b0b0a4a43a0889f1ea1b027f681/data")
+            console.log(response)
+            
+
+            for (var i = 0; i < response.data.length; i++) {
+              showData(response.data[i])
+            }
+          }
+          catch(error) {
+            console.log(error)
+          }
+        }
+        )*/
+        
+      
+
+      async function showData(user)  {
+      
+        document.getElementById('pid').value = ''
+        document.getElementById('pname').value = ''
+        document.getElementById('price').value = ''
+        document.getElementById('pcat').value = ''
+
+
+      //var li = document.createElement("li")
+      //li.appendChild(document.createTextNode(`${id.productId} ${id.productName} ${id.category}`)) 
+      //userList.appendChild(li)
+
+      //var btn = document.createElement('div')
+
+      const parentItem = document.getElementById('users')
+      
+      const childItem = `<li id=${user._id}>${user.productId} ${user.productName} ${productPrice} ${user.category}<button onclick=deleteProdId('${user._id}')>
+        DELETE</button>
+        <button onclick=editProducts('${user.productId}','${user.productName}','${productPrice}','${user.category}','${user._id}')>EDIT</button>`
+
+      parentItem.innerHTML = parentItem.innerHTML + childItem
+
+      }
+
+      async function deleteProdId(userId)  {
+        try {
+        response = await axios.delete(`https://crudcrud.com/api/c9320b0b0a4a43a0889f1ea1b027f681/data/${userId}`)
+      
+          removeProdId(userId)
+        }
+        catch(error) {
+          console.log(error)
+        }
+        
+      }
+
+      async function removeProdId(userId)  {
+        try {
+        const parentNode = document.getElementById('users');
+        const childNode = document.getElementById(userId)
+        if (childNode)  {
+        parentNode.removeChild(childNode);
+        }
+      }
+      catch(error) {
+        console.log(error)
+      }
+}
+
+      async function editProducts(productId,productName,productPrice,category,userId)  {
+        try {
+          document.getElementById('pid').value = productId
+          document.getElementById('pname').value = productName
+          document.getElementById('price').value = productPrice
+          document.getElementById('pcat').value = category
+
+          deleteProdId(userId)
+        
+      }
+      catch(error) {
+        console.log(error)
+      }
+    }
+      
+        </script>
+    </body>
+
+    </html>
